@@ -3,6 +3,7 @@ package com.example.diceroller
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 
@@ -24,11 +25,19 @@ class MainActivity : AppCompatActivity() {
         val dice2 = Dice(20)
         val diceRoll2 = dice2.roll()
 
+        val diceImage: ImageView = findViewById(R.id.imageView2)
+        when(diceRoll){
+            1 ->  diceImage.setImageResource(R.drawable.dice_1)
+            2 ->  diceImage.setImageResource(R.drawable.dice_2)
+            3 -> diceImage.setImageResource(R.drawable.dice_3)
+            4 -> diceImage.setImageResource(R.drawable.dice_4)
+            5 -> diceImage.setImageResource(R.drawable.dice_5)
+            6 -> diceImage.setImageResource(R.drawable.dice_6)
+        }
 
-        val resultTextView: TextView = findViewById(R.id.textView)
-        resultTextView.text = diceRoll.toString()
-        val resultTextView2: TextView = findViewById(R.id.textView2)
-        resultTextView2.text = diceRoll2.toString()
+        diceImage.contentDescription = diceRoll.toString()
+
+
     }
 }
 
