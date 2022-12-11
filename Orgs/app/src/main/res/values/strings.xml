@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Orgs</string>
+    <string name="cesta_frutas">Cesta de Frutas.</string>
+    <string name="nome">Nome</string>
+    <string name="valor">Valor</string>
+    <string name="salvar">Salvar</string>
+</resources>
