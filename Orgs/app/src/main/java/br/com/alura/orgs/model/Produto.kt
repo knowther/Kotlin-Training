@@ -1,6 +1,10 @@
 package br.com.alura.orgs.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 
-data class Produto(val nome: String, val descricao: String, val valor:BigDecimal, val image: String? = null) {
+@Parcelize
+data class Produto(val nome: String, val descricao: String, val valor:BigDecimal, val image: String? = null): Parcelable {
+
 }

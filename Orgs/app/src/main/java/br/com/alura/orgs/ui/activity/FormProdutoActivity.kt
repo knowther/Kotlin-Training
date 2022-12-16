@@ -21,6 +21,7 @@ class FormProdutoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         bindingProduto = ActivityFormProdutoBinding.inflate(layoutInflater)
         setContentView(bindingProduto.root)
+        title = "Cadastrar Produto"
         val button = bindingProduto.botaoSalvar
 
         bindingProduto.activityFormProductImage.setOnClickListener{

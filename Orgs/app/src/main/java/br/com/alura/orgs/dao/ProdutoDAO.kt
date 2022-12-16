@@ -9,7 +9,6 @@ class ProdutoDAO {
     }
 
     fun buscaTodos(): List<Produto>{
-
         return produtos.toList();
 
     }

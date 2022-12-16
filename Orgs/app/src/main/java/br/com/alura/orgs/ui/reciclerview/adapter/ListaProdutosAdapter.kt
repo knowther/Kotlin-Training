@@ -14,11 +14,22 @@ import coil.load
 import java.text.NumberFormat
 import java.util.*
 
-class ListaProdutosAdapter( private val context: Context, produtos: List<Produto>) : RecyclerView.Adapter<ListaProdutosAdapter.ViewHouder>() {
+class ListaProdutosAdapter( private val context: Context, produtos: List<Produto>, var whenClickItemListener: (produto: Produto) -> Unit = {}) : RecyclerView.Adapter<ListaProdutosAdapter.ViewHouder>() {
 
     private val produtos = produtos.toMutableList()
 
     class ViewHouder(private val binding: ProdutoItemBinding): RecyclerView.ViewHolder(binding.root){
+
+        private lateinit var produto: Produto
+
+        init {
+            itemView.setOnClickListener{
+                if(::produto.isInitialized){
+//                    whenClickItemListener(produto)
+                }
+            }
+        }
+
         fun vincula(produto: Produto) {
             var title = binding.title
             title.text = produto.nome
@@ -28,11 +39,11 @@ class ListaProdutosAdapter( private val context: Context, produtos: List<Produto
             val formatter: NumberFormat = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
            val valorEmModeda: String = formatter.format(produto.valor)
             preco.text = valorEmModeda
-            val visibilidade = if(produto.image != null){
-                View.VISIBLE
-            }else{
-                View.GONE
-            }
+//            val visibilidade = if(produto.image != null){
+//                View.VISIBLE
+//            }else{
+//                View.GONE
+//            }
             binding.imageView.tryImageLoader(produto.image)
 
         }
