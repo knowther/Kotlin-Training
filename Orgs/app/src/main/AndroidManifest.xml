@@ -19,6 +19,9 @@
             android:name=".ui.activity.FormProdutoActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activity.ProdutoDetalheActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.ListaProdutoActivity"
             android:exported="true">
             <intent-filter>

@@ -3,14 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.144" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/drawable/placeholder.xml" value="0.1205" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/drawable/plano_de_fundo_produto.xml" value="0.119" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/layout/activity_form_imagem.xml" value="0.33" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/layout/activity_form_produto.xml" value="0.22" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/layout/activity_lista_produtos.xml" value="0.2975630611372381" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/layout/activity_product_detail.xml" value="0.5" />
+        <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/layout/activity_product_detail.xml" value="0.39156626506024095" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/layout/produto_item.xml" value="0.16" />
+        <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/menu/menu_product_detail.xml" value="0.22" />
       </map>
     </option>
   </component>

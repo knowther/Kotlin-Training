@@ -4,18 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.alura.orgs.dao.ProdutoDAO
+import br.com.alura.orgs.database.AppDataBase
 import br.com.alura.orgs.databinding.ActivityListaProdutosBinding
+import br.com.alura.orgs.model.Produto
 import br.com.alura.orgs.ui.reciclerview.adapter.ListaProdutosAdapter
 
 
-class ListaProdutoActivity: AppCompatActivity() {
+class ListaProdutoActivity: AppCompatActivity(), ListaProdutosAdapter.ClickProduto {
 
     private lateinit var bindingMain: ActivityListaProdutosBinding
-
-    private val dao = ProdutoDAO()
     private val adapter = ListaProdutosAdapter(
-        context = this, produtos = dao.buscaTodos()
+        context = this,  clickProduto = this
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,12 +24,18 @@ class ListaProdutoActivity: AppCompatActivity() {
         configuraRecicleView()
         configuraFab()
 
+        var db = AppDataBase.instance(this)
+
+        val produtoDao = db.produtoDao()
+        adapter.atualiza(produtoDao.buscaTodos())
     }
 
     override fun onResume() {
         super.onResume()
-        adapter.atualiza(dao.buscaTodos())
+        var db = AppDataBase.instance(this)
 
+        val produtoDao = db.produtoDao()
+        adapter.atualiza(produtoDao.buscaTodos())
     }
 
     private fun configuraFab() {
@@ -47,13 +52,21 @@ class ListaProdutoActivity: AppCompatActivity() {
 
         recyclerView.adapter = adapter
 
-        adapter.whenClickItemListener = {
-          val goToDetailProduct: Intent = Intent(this, ProdutoDetalheActivity::class.java)
-            goToDetailProduct.putExtra("KEY_PRODUCT", it)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
+
+    override fun clickProduto(produto: Produto) {
+        super.clickProduto(produto)
+        val goToDetailProduct: Intent = Intent(this, ProdutoDetalheActivity::class.java).apply {
+              putExtra(CHAVE_PRODUTO_ID, produto.id)
+          }
+            startActivity(goToDetailProduct)
     }
-}
+    }
+
+
+
 
 

@@ -1,6 +1,7 @@
 package br.com.alura.orgs.ui.reciclerview.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,19 +15,16 @@ import coil.load
 import java.text.NumberFormat
 import java.util.*
 
-class ListaProdutosAdapter( private val context: Context, produtos: List<Produto>, var whenClickItemListener: (produto: Produto) -> Unit = {}) : RecyclerView.Adapter<ListaProdutosAdapter.ViewHouder>() {
+class ListaProdutosAdapter( private val context: Context, produtos: List<Produto> = emptyList(), var clickProduto: ClickProduto) : RecyclerView.Adapter<ListaProdutosAdapter.ViewHouder>() {
 
     private val produtos = produtos.toMutableList()
 
-    class ViewHouder(private val binding: ProdutoItemBinding): RecyclerView.ViewHolder(binding.root){
+    inner class ViewHouder(private val binding: ProdutoItemBinding): RecyclerView.ViewHolder(binding.root){
 
         private lateinit var produto: Produto
 
         init {
             itemView.setOnClickListener{
-                if(::produto.isInitialized){
-//                    whenClickItemListener(produto)
-                }
             }
         }
 
@@ -37,13 +35,12 @@ class ListaProdutosAdapter( private val context: Context, produtos: List<Produto
             descricao.text = produto.descricao
             val preco = binding.price
             val formatter: NumberFormat = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
-           val valorEmModeda: String = formatter.format(produto.valor)
+            val valorEmModeda: String = formatter.format(produto.valor)
             preco.text = valorEmModeda
-//            val visibilidade = if(produto.image != null){
-//                View.VISIBLE
-//            }else{
-//                View.GONE
-//            }
+            val cardView = binding.cardView
+            cardView.setOnClickListener {
+                clickProduto.clickProduto(produto)
+            }
             binding.imageView.tryImageLoader(produto.image)
 
         }
@@ -58,6 +55,14 @@ class ListaProdutosAdapter( private val context: Context, produtos: List<Produto
     override fun onBindViewHolder(holder: ViewHouder, position: Int) {
         val produto = produtos[position]
         holder.vincula(produto)
+
+    }
+
+    interface ClickProduto{
+
+        fun clickProduto(produto: Produto){
+
+        }
 
     }
 
