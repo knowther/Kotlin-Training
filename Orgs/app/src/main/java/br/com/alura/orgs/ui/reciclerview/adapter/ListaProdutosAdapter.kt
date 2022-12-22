@@ -1,16 +1,22 @@
 package br.com.alura.orgs.ui.reciclerview.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.ProdutoItemBinding
 import br.com.alura.orgs.extensions.tryImageLoader
 import br.com.alura.orgs.model.Produto
+import br.com.alura.orgs.ui.activity.CHAVE_PRODUTO_ID
+import br.com.alura.orgs.ui.activity.FormProdutoActivity
 import coil.load
 import java.text.NumberFormat
 import java.util.*
@@ -41,11 +47,40 @@ class ListaProdutosAdapter( private val context: Context, produtos: List<Produto
             cardView.setOnClickListener {
                 clickProduto.clickProduto(produto)
             }
+            cardView.setOnLongClickListener {
+                val popupMenu = PopupMenu(context, cardView)
+                popupMenu.menuInflater.inflate(R.menu.menu_product_options, popupMenu.menu)
+                popupMenu.setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.menu_product_detail_edit -> {
+                            Intent(context, FormProdutoActivity::class.java).apply {
+                                putExtra(CHAVE_PRODUTO_ID, produto.id)
+                                Log.i("entrou edit", "entrou edit")
+                                startActivity(context, this, null)
+                            }
+
+                          true
+                            }
+
+                        R.id.menu_product_detail_delete -> {
+
+                            Log.i("entrou delete", "entrou delete")
+                            true
+                        }
+                        else -> {Log.i("entor nenhum","${menuItem.itemId} ,  delete: ${R.id.menu_product_detail_delete}, edit: ${R.id.menu_product_detail_edit}")
+                            true}
+                    }
+                }
+                popupMenu.show()
+                true
+            }
             binding.imageView.tryImageLoader(produto.image)
 
         }
 
     }
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHouder {
       val inflater = LayoutInflater.from(context)
        val binding = ProdutoItemBinding.inflate(inflater, parent, false)
@@ -57,9 +92,9 @@ class ListaProdutosAdapter( private val context: Context, produtos: List<Produto
         holder.vincula(produto)
 
     }
+    
 
     interface ClickProduto{
-
         fun clickProduto(produto: Produto){
 
         }

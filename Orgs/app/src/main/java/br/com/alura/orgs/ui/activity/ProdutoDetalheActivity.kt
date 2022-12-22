@@ -58,6 +58,7 @@ class ProdutoDetalheActivity: AppCompatActivity() {
             when(item.itemId){
                 //caso o edit for pressionado
                 R.id.menu_product_detail_edit -> {
+
                     Intent(this, FormProdutoActivity::class.java).apply {
                         putExtra(CHAVE_PRODUTO_ID, produtoId)
                         startActivity(this)
