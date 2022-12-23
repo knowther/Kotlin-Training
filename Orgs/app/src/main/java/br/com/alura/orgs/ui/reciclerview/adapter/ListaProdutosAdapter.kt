@@ -68,7 +68,6 @@ class ListaProdutosAdapter(
                     }
                     R.id.delete_popup -> {
                         quandoClicaEmRemover(produto)
-                        atualiza(produtos)
                     }
                 }
             }

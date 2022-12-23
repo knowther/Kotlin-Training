@@ -12,8 +12,10 @@
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/layout/activity_product_detail.xml" value="0.39156626506024095" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/layout/produto_item.xml" value="0.16" />
+        <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/menu/menu_list.xml" value="0.1513467293715263" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/menu/menu_product_detail.xml" value="0.22" />
         <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/menu/menu_product_options.xml" value="0.27710843373493976" />
+        <entry key="..\:/DH/Kotlin-Training/Orgs/app/src/main/res/menu/submenu_filter.xml" value="0.33" />
       </map>
     </option>
   </component>

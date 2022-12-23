@@ -4,5 +4,36 @@
 
     <item android:title="Item"
         android:icon="@drawable/ic_action_filter"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom">
+        <menu>
+            <item android:id="@+id/submenu_filter_nome_ASC"
+                android:title="nome asc"
+                app:showAsAction="never"/>
+
+            <item android:id="@+id/submenu_filter_nome_DESC"
+                android:title="nome desc"
+                app:showAsAction="never"/>
+
+            <item android:id="@+id/submenu_filter_descricao_ASC"
+                android:title="descrição asc"
+                app:showAsAction="never"/>
+
+            <item android:id="@+id/submenu_filter_descricao_DESC"
+                android:title="descrição desc"
+                app:showAsAction="never"/>
+
+            <item android:id="@+id/submenu_filter_valor_ASC"
+                android:title="valor asc"
+                app:showAsAction="never"/>
+
+            <item android:id="@+id/submenu_filter_valor_DESC"
+                android:title="valor desc"
+                app:showAsAction="never"/>
+
+            <item android:id="@+id/submenu_filter_sem_ordenacao"
+                android:title="sem ordenação"
+                app:showAsAction="never"/>
+
+        </menu>
+    </item>
 </menu>
