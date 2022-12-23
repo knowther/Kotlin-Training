@@ -71,12 +71,6 @@ class FormProdutoActivity : AppCompatActivity() {
 
             criaProduto()
             val produtoNovo = criaProduto()
-//            if(produtoId> 0){
-//                produtoDao.edita(produtoNovo)
-//            }else{
-//                produtoDao.salva(produtoNovo)
-//            }
-
             produtoDao.salva(produtoNovo)
 
             finish()
