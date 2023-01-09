@@ -1,17 +1,26 @@
 package br.com.alura.orgs.ui.activity
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.R
 import br.com.alura.orgs.database.AppDataBase
 import br.com.alura.orgs.database.dao.ProdutoDao
 import br.com.alura.orgs.databinding.ActivityProductDetailBinding
 import br.com.alura.orgs.extensions.tryImageLoader
 import br.com.alura.orgs.model.Produto
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.NumberFormat
 import java.util.*
 
@@ -26,6 +35,8 @@ class ProdutoDetalheActivity: AppCompatActivity() {
     private var produtoId: Long = 0L
     private var produto: Produto? = null
 
+    private val scope = CoroutineScope(IO)
+
     private lateinit var bindingDetailProduct: ActivityProductDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,10 +49,18 @@ class ProdutoDetalheActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-            produto = produtoDao.findById(produtoId)!!
-        produto?.let {
-            preencheCampos(it)
-        } ?: finish()
+        tentaBuscarProd()
+    }
+
+    private fun tentaBuscarProd() {
+        lifecycleScope.launch {
+            produtoDao.findById(produtoId).collect{ it ->
+                produto = it
+                produto?.let {
+                    preencheCampos(it)
+                } ?: finish()
+            }
+        }
     }
 
 
@@ -66,10 +85,11 @@ class ProdutoDetalheActivity: AppCompatActivity() {
                 }
                 //caso e delete for pressionado
                 R.id.menu_product_detail_delete -> {
-                    produto?.let {
-                        produtoDao.deleta(it)
+                    lifecycleScope.launch {
+                        produto?.let {
+                            produtoDao.deleta(it)
+                        }
                     }
-
                     finish()
                 }
             }
@@ -85,6 +105,7 @@ class ProdutoDetalheActivity: AppCompatActivity() {
 
 
     private fun preencheCampos(product: Produto?) {
+        Log.i(TAG, "chego")
         val productImage = bindingDetailProduct.imageView2
         val productTitle = bindingDetailProduct.activityProductDetailProductTitle
         val productDect = bindingDetailProduct.activityProductDetailProductDetail

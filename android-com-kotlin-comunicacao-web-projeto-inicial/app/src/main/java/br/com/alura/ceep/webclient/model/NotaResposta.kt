@@ -1,4 +1,4 @@
-package br.com.alura.ceep.webclient
+package br.com.alura.ceep.webclient.model
 
 import br.com.alura.ceep.model.Nota
 import java.util.*

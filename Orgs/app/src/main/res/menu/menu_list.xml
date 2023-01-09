@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Item"
+    <item android:title="filter_menu"
         android:icon="@drawable/ic_action_filter"
         app:showAsAction="ifRoom">
         <menu>
@@ -36,4 +36,12 @@
 
         </menu>
     </item>
+    <item android:id="@+id/exit_menu"
+        android:icon="@drawable/ic_action_exit"
+        android:title="Sair do App"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/user_menu"
+        android:icon="@drawable/ic_action_profile"
+        android:title="Ver perfil"
+        app:showAsAction="ifRoom"/>
 </menu>

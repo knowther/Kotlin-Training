@@ -4,4 +4,7 @@
     <string name="nome">Nome</string>
     <string name="valor">Valor</string>
     <string name="salvar">Salvar</string>
+    <string name="usuario">Usuário</string>
+    <string name="senha">Senha</string>
+    <string name="cadastrar">Cadastrar</string>
 </resources>

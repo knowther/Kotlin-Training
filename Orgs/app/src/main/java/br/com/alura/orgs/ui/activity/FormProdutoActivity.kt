@@ -1,21 +1,24 @@
 package br.com.alura.orgs.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.database.AppDataBase
 import br.com.alura.orgs.databinding.ActivityFormProdutoBinding
 import br.com.alura.orgs.extensions.tryImageLoader
 import br.com.alura.orgs.model.Produto
 import br.com.alura.orgs.ui.dialog.FormImageDialog
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import java.math.BigDecimal
 
 
-class FormProdutoActivity : AppCompatActivity() {
+class FormProdutoActivity : UserBaseActivity() {
     private lateinit var bindingProduto: ActivityFormProdutoBinding
 
     private var url: String? = null
     private var produtoId = 0L
-    private val produtoDao by lazy{
+    private val produtoDao by lazy {
         val db = AppDataBase.instance(this)
         db.produtoDao()
     }
@@ -34,15 +37,25 @@ class FormProdutoActivity : AppCompatActivity() {
             }
         }
         configuraBotaoSalvar()
-
         tentaCarregarProduto()
-
-        }
+    }
 
     override fun onResume() {
         super.onResume()
-        produtoDao.findById(produtoId)?.let {
-            preencheCampos(it)
+        if (produtoId != 0L) {
+            tentaBuscarProd()
+        }
+
+    }
+
+    private fun tentaBuscarProd() {
+
+        lifecycleScope.launch {
+            produtoDao.findById(produtoId)?.let {
+                it.collect { produto ->
+                    preencheCampos(produto)
+                }
+            }
         }
     }
 
@@ -52,32 +65,35 @@ class FormProdutoActivity : AppCompatActivity() {
 
 
     private fun preencheCampos(produto: Produto) {
-        setTitle("Editar Produto")
-        url = produto.image
-        bindingProduto.activityFormProductImage.tryImageLoader(produto.image)
-        bindingProduto.nameInputEditText.setText(produto.nome)
-        bindingProduto.descInputEditText.setText(produto.descricao)
-        bindingProduto.itemValueInputEditText.setText(produto.valor.toPlainString())
+        lifecycleScope.launch {
+//            withContext(Main){
+            setTitle("Editar Produto")
+            url = produto.image
+            bindingProduto.activityFormProductImage.tryImageLoader(produto.image)
+            bindingProduto.nameInputEditText.setText(produto.nome)
+            bindingProduto.descInputEditText.setText(produto.descricao)
+            bindingProduto.itemValueInputEditText.setText(produto.valor.toPlainString())
+//            }
+        }
+
     }
 
     private fun configuraBotaoSalvar() {
         val button = bindingProduto.botaoSalvar
-        var db = AppDataBase.instance(this)
-
-        val produtoDao = db.produtoDao()
-
 
         button.setOnClickListener {
+            lifecycleScope.launch {
+                usuario.firstOrNull()?.let{
+                    val produtoNovo = criaProduto(it.username)
+                    produtoDao.salva(produtoNovo)
+                    finish()
+                }
+            }
 
-            criaProduto()
-            val produtoNovo = criaProduto()
-            produtoDao.salva(produtoNovo)
-
-            finish()
         }
     }
 
-    private fun criaProduto(): Produto {
+    private fun criaProduto(usuarioId: String): Produto {
         //bindings
         val nomeInput = bindingProduto.nameInputEditText
         val descricaoInput = bindingProduto.descInputEditText
@@ -90,7 +106,14 @@ class FormProdutoActivity : AppCompatActivity() {
         val valorText = valorInput.text.toString()
         val valorConvertido =
             if (valorText.isBlank()) BigDecimal.ZERO else BigDecimal(valorText)
-        return Produto( id = produtoId, nome = nome, descricao = descricao, valor = valorConvertido, image = url)
+        return Produto(
+            id = produtoId,
+            nome = nome,
+            descricao = descricao,
+            valor = valorConvertido,
+            image = url,
+            usuarioId = usuarioId
+        )
     }
 
 
