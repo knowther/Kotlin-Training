@@ -1,7 +1,9 @@
 package br.com.alura.ceep.ui.activity
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +38,13 @@ class ListaNotasActivity : AppCompatActivity() {
         setContentView(binding.root)
         configuraFab()
         configuraRecyclerView()
+        binding.refreshHandler.setOnRefreshListener {
+        lifecycleScope.launch {
+            Log.i(TAG, "TESTE REFRESH")
+                repository.sincroniza()
+            }
+        }
+
         lifecycleScope.launch {
             launch {
                 repository.sincroniza()
@@ -78,6 +87,7 @@ class ListaNotasActivity : AppCompatActivity() {
                         adapter.atualiza(notasEncontradas)
                         GONE
                     }
+                binding.refreshHandler.isRefreshing = false
             }
     }
 }

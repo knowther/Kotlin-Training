@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
@@ -120,8 +121,10 @@ class FormNotaActivity : AppCompatActivity() {
 
     private fun salva() {
         val nota = criaNota()
+        binding.progressBar.show()
         lifecycleScope.launch {
             repository.salva(nota)
+            binding.progressBar.hide()
             finish()
         }
     }
