@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.alura.cepapp.ActivityMain">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/form_cep_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/form_cep_input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Insira o CEP"
+            android:inputType="textUri" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/form_cep_input"
+        app:layout_constraintStart_toStartOf="@id/form_cep_input"
+        app:layout_constraintEnd_toEndOf="@id/form_cep_input">
+
+        <TextView
+            android:id="@+id/cep_logradouro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@id/form_cep_input"
+            app:layout_constraintStart_toStartOf="@id/form_cep_input"
+            app:layout_constraintEnd_toEndOf="@id/form_cep_input"
+            tools:text="Logradouro"/>
+
+        <TextView
+            android:id="@+id/cep_bairro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@id/cep_logradouro"
+            app:layout_constraintTop_toBottomOf="@id/cep_logradouro"
+            app:layout_constraintEnd_toEndOf="@id/cep_logradouro"
+            tools:text="Bairro" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <Button
+        android:id="@+id/search_cep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscar Cep"
+         app:layout_constraintTop_toBottomOf="@id/cep_bairro"
+        app:layout_constraintStart_toStartOf="@id/form_cep_input"
+        app:layout_constraintEnd_toEndOf="@id/form_cep_input"
+        android:layout_margin="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

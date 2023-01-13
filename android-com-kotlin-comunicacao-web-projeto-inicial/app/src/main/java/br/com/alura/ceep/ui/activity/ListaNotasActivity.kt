@@ -43,6 +43,7 @@ class ListaNotasActivity : AppCompatActivity() {
             Log.i(TAG, "TESTE REFRESH")
                 repository.sincroniza()
             }
+
         }
 
         lifecycleScope.launch {
