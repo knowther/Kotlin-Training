@@ -16,7 +16,12 @@ class ListaNotasAdapter(
     notas: List<Nota> = emptyList()
 ) : RecyclerView.Adapter<ListaNotasAdapter.ViewHolder>() {
 
-    private val notas = notas.toMutableList()
+        private var notas = mutableListOf<Nota>()
+
+    fun setNotaList(notas: List<Nota>){
+        this.notas = notas.toMutableList()
+        notifyDataSetChanged()
+    }
 
     class ViewHolder(
         private val binding: NotaItemBinding,

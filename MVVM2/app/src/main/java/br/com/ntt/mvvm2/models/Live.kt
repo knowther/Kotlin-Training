@@ -1,4 +1,4 @@
-package com.ocanha.mvvmrecyclerviewcomretrofitemkotlin.models
+package br.com.ntt.mvvm2.models
 
 data class Live (
     var title: String,

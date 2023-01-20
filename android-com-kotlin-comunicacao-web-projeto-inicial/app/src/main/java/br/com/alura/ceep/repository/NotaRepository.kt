@@ -1,10 +1,12 @@
 package br.com.alura.ceep.repository
 
+import androidx.lifecycle.LiveData
 import br.com.alura.ceep.database.dao.NotaDao
 import br.com.alura.ceep.model.Nota
 import br.com.alura.ceep.webclient.NotaWebClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import retrofit2.Call
 
 
 class NotaRepository(private val dao: NotaDao,

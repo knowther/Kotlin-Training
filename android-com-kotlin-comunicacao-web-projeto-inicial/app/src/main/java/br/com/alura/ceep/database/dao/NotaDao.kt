@@ -1,5 +1,6 @@
 package br.com.alura.ceep.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -7,6 +8,7 @@ import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import br.com.alura.ceep.model.Nota
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Call
 
 @Dao
 interface NotaDao {

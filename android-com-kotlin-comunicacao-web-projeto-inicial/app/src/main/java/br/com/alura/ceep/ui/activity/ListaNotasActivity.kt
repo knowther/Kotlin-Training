@@ -6,23 +6,31 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import br.com.alura.ceep.utils.CONSTRAINTS
 import br.com.alura.ceep.database.AppDatabase
 import br.com.alura.ceep.databinding.ActivityListaNotasBinding
 import br.com.alura.ceep.extensions.vaiPara
 import br.com.alura.ceep.repository.NotaRepository
 import br.com.alura.ceep.ui.recyclerview.adapter.ListaNotasAdapter
+import br.com.alura.ceep.viewmodel.ListaNotasViewModel
+import br.com.alura.ceep.viewmodel.MainViewModelFactory
 import br.com.alura.ceep.webclient.NotaWebClient
 import kotlinx.coroutines.launch
+
+//shared preferences
 
 class ListaNotasActivity : AppCompatActivity() {
 
     private val binding by lazy {
         ActivityListaNotasBinding.inflate(layoutInflater)
     }
+    lateinit var viewModel: ListaNotasViewModel
+
     private val adapter by lazy {
         ListaNotasAdapter(this)
     }
@@ -38,32 +46,52 @@ class ListaNotasActivity : AppCompatActivity() {
         setContentView(binding.root)
         configuraFab()
         configuraRecyclerView()
+        viewModel = ViewModelProvider(
+            this,
+            MainViewModelFactory(repository)
+        ).get(ListaNotasViewModel::class.java)
         binding.refreshHandler.setOnRefreshListener {
-        lifecycleScope.launch {
-            Log.i(TAG, "TESTE REFRESH")
+            lifecycleScope.launch {
+                Log.i(TAG, "TESTE REFRESH")
                 repository.sincroniza()
+                binding.refreshHandler.isRefreshing = false
             }
-
         }
-
-        lifecycleScope.launch {
-            launch {
-                repository.sincroniza()
-            }
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                buscaNotas()
-            }
-
-        }
-
-
     }
+    override fun onStart() {
+        super.onStart()
+        viewModel.notaList.observe(this, Observer {
+            Log.i(TAG, "onStart : $it")
+            visibilityControl(recycler = CONSTRAINTS.VISIBLE, semNotas = CONSTRAINTS.GONE)
+            adapter.setNotaList(it)
+        })
 
+        viewModel.errorMessage.observe(this, Observer {
+            visibilityControl(recycler = CONSTRAINTS.GONE, semNotas = CONSTRAINTS.VISIBLE)
+        })
+    }
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch{
+            viewModel.getAllNotas()
+        }
+    }
     private fun configuraFab() {
         binding.activityListaNotasFab.setOnClickListener {
             Intent(this, FormNotaActivity::class.java).apply {
                 startActivity(this)
             }
+        }
+    }
+
+    private fun visibilityControl(recycler: String, semNotas: String){
+
+        if(recycler == CONSTRAINTS.GONE && semNotas == CONSTRAINTS.VISIBLE){
+            binding.activityListaNotasRecyclerview.visibility = GONE
+            binding.activityListaNotasMensagemSemNotas.visibility = VISIBLE
+        }else{
+            binding.activityListaNotasMensagemSemNotas.visibility = GONE
+            binding.activityListaNotasRecyclerview.visibility = VISIBLE
         }
     }
 
@@ -74,21 +102,5 @@ class ListaNotasActivity : AppCompatActivity() {
                 putExtra(NOTA_ID, nota.id)
             }
         }
-    }
-
-    private suspend fun buscaNotas() {
-        repository.buscaTodas()
-            .collect { notasEncontradas ->
-                binding.activityListaNotasMensagemSemNotas.visibility =
-                    if (notasEncontradas.isEmpty()) {
-                        binding.activityListaNotasRecyclerview.visibility = GONE
-                        VISIBLE
-                    } else {
-                        binding.activityListaNotasRecyclerview.visibility = VISIBLE
-                        adapter.atualiza(notasEncontradas)
-                        GONE
-                    }
-                binding.refreshHandler.isRefreshing = false
-            }
     }
 }
