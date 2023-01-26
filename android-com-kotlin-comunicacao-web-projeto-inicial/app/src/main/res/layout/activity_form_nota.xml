@@ -44,7 +44,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".ui.activity.FormNotaActivity">
+            tools:context=".presentation.ui.activity.FormNotaActivity">
 
             <ImageView
                 android:id="@+id/activity_form_nota_imagem"

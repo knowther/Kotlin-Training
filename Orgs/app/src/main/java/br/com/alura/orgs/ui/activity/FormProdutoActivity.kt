@@ -1,9 +1,11 @@
 package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.database.AppDataBase
 import br.com.alura.orgs.databinding.ActivityFormProdutoBinding
+import br.com.alura.orgs.extensions.toast
 import br.com.alura.orgs.extensions.tryImageLoader
 import br.com.alura.orgs.model.Produto
 import br.com.alura.orgs.ui.dialog.FormImageDialog
@@ -85,7 +87,12 @@ class FormProdutoActivity : UserBaseActivity() {
             lifecycleScope.launch {
                 usuario.firstOrNull()?.let{
                     val produtoNovo = criaProduto(it.username)
-                    produtoDao.salva(produtoNovo)
+                    if(produtoNovo.valorEValido){
+                        produtoDao.salva(produtoNovo)
+                    }else{
+                        toast("Não foi possível salvar pois o produto é inválido.")
+                    }
+
                     finish()
                 }
             }
