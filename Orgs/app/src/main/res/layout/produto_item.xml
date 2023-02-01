@@ -14,7 +14,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         >
 
         <TextView
@@ -30,7 +29,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imageView"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Salada de Frutas" />
+            tools:text="Salada de Frutas AAAAAAAAAAAAAAAA" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

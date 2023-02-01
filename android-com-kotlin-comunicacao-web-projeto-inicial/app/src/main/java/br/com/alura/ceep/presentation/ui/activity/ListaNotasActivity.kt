@@ -23,6 +23,8 @@ import kotlinx.coroutines.launch
 
 //shared preferences
 
+
+
 class ListaNotasActivity : AppCompatActivity() {
 
     private val binding by lazy {
@@ -33,6 +35,8 @@ class ListaNotasActivity : AppCompatActivity() {
     private val adapter by lazy {
         ListaNotasAdapter(this)
     }
+
+
     private val repository by lazy{
         NotaRepository(
             AppDatabase.instancia(this).notaDao(),

@@ -2,28 +2,32 @@ package br.com.alura.orgs
 
 import br.com.alura.orgs.model.Produto
 import junit.framework.TestCase.*
+import org.amshove.kluent.shouldBe
+import org.amshove.kluent.shouldBeFalse
 import org.junit.Test
 import java.math.BigDecimal
 
-class TestaProduto {
+class ProdutoTests {
 
     @Test
-    fun ProdutoValorValido(){
+    fun `Given ProdutoValorValido`(){
         val produtoValido = Produto(nome = "Banana", descricao = "Banana Prata", valor = BigDecimal(6.99))
-        assertTrue(produtoValido.valorEValido)
+//        assertTrue("Produto com valor válido", produtoValido.valorEValido)
+        produtoValido.valorEValido shouldBe true
     }
 
     @Test
-    fun ProdutoValorInvalidoMenorQue0(){
+    fun Should_false_when_ProdutoValorInvalidoMenorQue0(){
         val produtoInvalido = Produto(nome = "Banana", descricao = "Banana Anã", valor = BigDecimal(-1))
-        assertFalse(produtoInvalido.valorEValido)
-
+//        assertFalse("Produto com valor negativo",produtoInvalido.valorEValido)
+        produtoInvalido.valorEValido shouldBe false
     }
 
     @Test
-    fun produtoValorInvalidoIgual0(){
+    fun Should_false_when_produtoValorInvalidoIgual0(){
         val produtoInvalido = Produto(nome = "Maça", descricao = "Maçã Comum", valor = BigDecimal(0))
-        assertFalse(produtoInvalido.valorEValido)
+//        assertFalse("produto com valor igual a 0",produtoInvalido.valorEValido)
+        produtoInvalido.valorEValido.shouldBeFalse()
     }
 
 

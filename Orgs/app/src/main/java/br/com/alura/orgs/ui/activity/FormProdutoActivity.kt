@@ -1,7 +1,6 @@
 package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.database.AppDataBase
 import br.com.alura.orgs.databinding.ActivityFormProdutoBinding
@@ -10,7 +9,6 @@ import br.com.alura.orgs.extensions.tryImageLoader
 import br.com.alura.orgs.model.Produto
 import br.com.alura.orgs.ui.dialog.FormImageDialog
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
 import java.math.BigDecimal
 

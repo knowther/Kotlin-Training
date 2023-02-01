@@ -2,6 +2,7 @@ package br.com.alura.ceep.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import br.com.alura.ceep.domain.model.Nota
@@ -13,7 +14,7 @@ interface NotaDao {
     @Insert(onConflict = REPLACE)
     suspend fun salva(note: Nota)
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     suspend fun salva(note: List<Nota>)
 
     @Query("SELECT * FROM Nota WHERE desativada =0")

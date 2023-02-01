@@ -2,16 +2,13 @@ package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.database.AppDataBase
 import br.com.alura.orgs.databinding.ActivityUserLoginBinding
 import br.com.alura.orgs.extensions.goTo
 import br.com.alura.orgs.extensions.toast
-import br.com.alura.orgs.model.Usuario
 import br.com.alura.orgs.preferences.dataStore
 import br.com.alura.orgs.preferences.usuarioLogadoPreference
 import kotlinx.coroutines.launch

@@ -25,7 +25,7 @@ class NotaRepository(private val dao: NotaDao,
 
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private suspend fun atualizaTodas(){
         webClient.buscaTodas()?.let { notas ->
           val notasSincronizadas =  notas.map {
@@ -46,11 +46,7 @@ class NotaRepository(private val dao: NotaDao,
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun salva(nota: Nota) {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-        val current = LocalDateTime.now().format(formatter).toString()
-        nota.datasalva = current
         dao.salva(nota)
         if (webClient.salva(nota)){
            val notaSincronizada = nota.copy(sincronizada = true)
@@ -58,7 +54,7 @@ class NotaRepository(private val dao: NotaDao,
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
+
     suspend fun sincroniza(){
         val notasDesativadas = dao.buscaDesativadas().first()
 
