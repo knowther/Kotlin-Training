@@ -37,7 +37,6 @@ class HomeViewHolder(val binding: MovieItemBinding) : RecyclerView.ViewHolder(bi
     fun bind(movie: MovieDTO, onItemClicked: (MovieDTO) -> Unit){
         binding.movieTitle.text = movie.title
         binding.movieImage.tryImageLoader(AppConstants.IMAGE_URL + movie.poster_path)
-
         itemView.setOnClickListener {
             onItemClicked(movie)
         }

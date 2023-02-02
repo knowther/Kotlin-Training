@@ -11,6 +11,11 @@ import retrofit2.Call
 class MovieRepository  constructor(private val webClient: MovieWebClient){
 
 
+
+    fun getTrending(): Call<MovieResponseDTO>{
+        return webClient.buscarTrending()
+    }
+
      fun getDiscover(): Call<MovieResponseDTO> {
         return webClient.buscarDiscover()
     }

@@ -7,15 +7,15 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.becas.ntt.watchen.ui.home.HomeFragment"
+        android:name="com.becas.ntt.watchen.ui.discover.DiscoverFragment"
         android:label="Discover"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_discover" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.becas.ntt.watchen.ui.gallery.GalleryFragment"
+        android:name="com.becas.ntt.watchen.ui.trending.TrendingFragment"
         android:label="Trending"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_trending" />
 
     <fragment
         android:id="@+id/nav_slideshow"

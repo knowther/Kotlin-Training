@@ -1,4 +1,4 @@
-package com.becas.ntt.watchen.ui.home
+package com.becas.ntt.watchen.ui.trending
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,27 +7,34 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.becas.ntt.watchen.MovieDetailActivity
 import com.becas.ntt.watchen.R
+import com.becas.ntt.watchen.data.webclient.MovieWebClient
 import com.becas.ntt.watchen.data.webclient.NetworkModule
 import com.becas.ntt.watchen.repository.MovieRepository
 import com.becas.ntt.watchen.ui.recyclerview.adapter.MoviesHomeAdapter
-import kotlinx.android.synthetic.main.fragment_home.*
+import com.becas.ntt.watchen.utils.AppConstants
+import com.becas.ntt.watchen.utils.extensions.goTo
+import kotlinx.android.synthetic.main.fragment_trending.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeFragment: Fragment() {
+class TrendingFragment : Fragment() {
 
-
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: TrendingViewModel
 
     private val repository by lazy{
         val api = NetworkModule().tmdbApi()
-        MovieRepository(api)
+        MovieRepository(MovieWebClient())
     }
 
     private val adapter by lazy {
-        MoviesHomeAdapter()
+        MoviesHomeAdapter{movie ->
+            context?.goTo(MovieDetailActivity::class.java){
+                putExtra(AppConstants.MOVIE_ID, movie.id.toString())
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +49,7 @@ class HomeFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(
-            R.layout.fragment_home,
+            R.layout.fragment_trending,
             container,
             false
         )
@@ -54,8 +61,8 @@ class HomeFragment: Fragment() {
         configuraRecyclerView()
         viewModel = ViewModelProvider(
             this,
-            HomeViewModelFactory(repository)
-        ).get(HomeViewModel::class.java)
+            TrendingViewModelFactory(repository)
+        ).get(TrendingViewModel::class.java)
 
         viewModel.movieList.observe(viewLifecycleOwner, Observer {
             adapter.setNotaList(it)

@@ -10,10 +10,10 @@ import retrofit2.http.Query
 interface TmdbApiService {
 
     @GET("trending/movie/day")
-   suspend fun getTrending(
+    fun getTrending(
 //        @Query("language") language: String,
 //        @Query("page") page: Int
-    ): MovieResponseDTO
+    ): Call<MovieResponseDTO>
 
    @GET("discover/movie")
     fun getDiscover(
@@ -22,8 +22,9 @@ interface TmdbApiService {
 
     @GET("movie/{movie_id}")
     fun getMovie(
-        @Query("language") language: String,
-        @Path("movie_id") movieId: String
+        @Path("movie_id") movieId: String,
+        @Query("language") language: String
+
     ): Call<MovieFindedDTO>
 
     @GET("account")

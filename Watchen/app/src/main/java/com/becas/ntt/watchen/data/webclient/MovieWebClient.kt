@@ -9,13 +9,12 @@ class MovieWebClient {
 
     private val tmdbService = NetworkModule().tmdbApi()
 
-    suspend fun buscarTrending(): List<MovieDTO>?{
-        val movResponse = tmdbService.getTrending()
-        return movResponse.results
+     fun buscarTrending(): Call<MovieResponseDTO>{
+        return tmdbService.getTrending()
     }
 
     fun buscarFilme(movieId: String) : Call<MovieFindedDTO>{
-        return tmdbService.getMovie("pt-BR", movieId)
+        return tmdbService.getMovie(movieId = movieId, language = "pt-BR")
     }
 
      fun buscarDiscover(): Call<MovieResponseDTO> {
