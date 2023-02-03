@@ -11,8 +11,6 @@ interface TmdbApiService {
 
     @GET("trending/movie/day")
     fun getTrending(
-//        @Query("language") language: String,
-//        @Query("page") page: Int
     ): Call<MovieResponseDTO>
 
    @GET("discover/movie")
@@ -23,9 +21,12 @@ interface TmdbApiService {
     @GET("movie/{movie_id}")
     fun getMovie(
         @Path("movie_id") movieId: String,
-        @Query("language") language: String
-
+        @Query("language") language: String,
+        @Query("append_to_response") videos: String = "videos"
     ): Call<MovieFindedDTO>
+
+    @GET("movie/upcoming")
+    fun getUpcoming(): Call<MovieResponseDTO>
 
     @GET("account")
     fun getUser()

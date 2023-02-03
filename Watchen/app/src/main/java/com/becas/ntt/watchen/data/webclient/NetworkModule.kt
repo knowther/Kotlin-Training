@@ -1,6 +1,6 @@
 package com.becas.ntt.watchen.data.webclient
 
-import com.becas.ntt.watchen.utils.AppConstants
+import com.becas.ntt.watchen.domain.utils.AppConstants
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

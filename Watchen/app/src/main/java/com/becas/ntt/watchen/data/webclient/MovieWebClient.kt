@@ -13,6 +13,10 @@ class MovieWebClient {
         return tmdbService.getTrending()
     }
 
+    fun buscarUpcoming(): Call<MovieResponseDTO>{
+        return  tmdbService.getUpcoming()
+    }
+
     fun buscarFilme(movieId: String) : Call<MovieFindedDTO>{
         return tmdbService.getMovie(movieId = movieId, language = "pt-BR")
     }
