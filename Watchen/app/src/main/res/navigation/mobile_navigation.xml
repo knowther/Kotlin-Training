@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_trending" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.becas.ntt.watchen.presentation.ui.slideshow.UpcomingFragment"
+        android:id="@+id/nav_upccoming"
+        android:name="com.becas.ntt.watchen.presentation.ui.upcoming.UpcomingFragment"
         android:label="Upcoming"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_upcoming" />
 </navigation>

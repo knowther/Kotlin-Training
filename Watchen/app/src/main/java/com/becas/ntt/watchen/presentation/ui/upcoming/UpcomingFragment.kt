@@ -1,4 +1,4 @@
-package com.becas.ntt.watchen.presentation.ui.slideshow
+package com.becas.ntt.watchen.presentation.ui.upcoming
 
 import android.os.Bundle
 import android.view.LayoutInflater

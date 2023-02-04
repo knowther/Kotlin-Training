@@ -1,42 +1,49 @@
 package com.becas.ntt.watchen.presentation.ui
 
 import android.content.Intent
+import android.graphics.Movie
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.becas.ntt.watchen.domain.model.FavoriteMovieManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.becas.ntt.watchen.R
 import com.becas.ntt.watchen.data.webclient.MovieWebClient
 import com.becas.ntt.watchen.data.webclient.NetworkModule
 import com.becas.ntt.watchen.data.webclient.model.dto.MovieFindedDTO
 import com.becas.ntt.watchen.databinding.ActivityMovieDetailBinding
+import com.becas.ntt.watchen.domain.model.FavoriteMovieManager
 import com.becas.ntt.watchen.domain.repository.MovieRepository
+import com.becas.ntt.watchen.domain.utils.AppConstants.IMAGE_URL
 import com.becas.ntt.watchen.domain.utils.AppConstants.MOVIE_ID
 import com.becas.ntt.watchen.domain.utils.AppConstants.POSTER_IMAGE_URL
+import com.becas.ntt.watchen.domain.utils.AppConstants.YOUTUBE_PATH
+import com.becas.ntt.watchen.domain.utils.extensions.formatUserAvaliation
 import com.becas.ntt.watchen.domain.utils.extensions.tryImageLoader
+import com.becas.ntt.watchen.presentation.ui.discover.DiscoverViewModel
+import com.becas.ntt.watchen.presentation.ui.discover.DiscoverViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import android.net.Uri
-import android.util.Log
-import android.view.View
-import com.becas.ntt.watchen.R
-import com.becas.ntt.watchen.domain.utils.AppConstants.YOUTUBE_PATH
-import java.text.DecimalFormat
 
 
 class MovieDetailActivity : AppCompatActivity() {
 
+    private lateinit var viewModel: MovieDetailViewModel
+
     private val repository by lazy{
-        val api = NetworkModule().tmdbApi()
+        NetworkModule().tmdbApi()
         MovieRepository(MovieWebClient())
     }
 
     private val binding by lazy {
         ActivityMovieDetailBinding.inflate(layoutInflater)
     }
-    private lateinit var favoriteMovieManager: FavoriteMovieManager
 
-        private var imagem: MutableStateFlow<String?> = MutableStateFlow(null)
+    private var isFavorite: Boolean = false
 
     private var movieId: String? = null
 
@@ -44,69 +51,53 @@ class MovieDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        tentaCarregarFilme()
-                tentaBuscarFilme()
 
-                favoriteMovieManager =
-                    movieId?.let { FavoriteMovieManager(this@MovieDetailActivity, it) }!!
-                lerFilmesFavoritos()
-        binding.imageFavoriteHearth.setOnClickListener{
-            Log.i("favoriteRes", lerFilmesFavoritos().toString())
-            if(lerFilmesFavoritos()){
-                removerFilmeFavorito()
-            }else{
-                salvarFilmeFavorito()
-            }
-        }
+        viewModel = ViewModelProvider(
+            this,
+            MovieDetailViewModelFactory(repository)
+        ).get(MovieDetailViewModel::class.java)
+
 
     }
 
-    private fun tentaBuscarFilme(){
-        val df = DecimalFormat("#.#")
-        CoroutineScope(Dispatchers.IO).launch {
-            movieId?.let{
-                val movieFinded: MovieFindedDTO? = repository.getMovie(it).execute().body()
-                movieId = movieFinded?.id.toString()
-                imagem.value= POSTER_IMAGE_URL + movieFinded?.backdrop_path
-                var genres: MutableList<String>? = null
-                CoroutineScope(Dispatchers.Main).launch{
-                    binding.movieTitle.setText(movieFinded?.title)
-                    movieFinded?.genres?.forEach{genre ->
-                        genres?.add(genre.name)
+
+    override fun onResume() {
+        super.onResume()
+        CoroutineScope(Dispatchers.Main).launch {
+            tentaCarregarFilme()?.let { viewModel.getMovie(it) }
+            viewModel.movieFinded.observe(this@MovieDetailActivity,
+                Observer { movie ->
+                    binding.movieTitle.setText(movie.title)
+                    binding.movieTrailer.tryImageLoader(POSTER_IMAGE_URL + movie.poster_path)
+                    binding.movieGenres.setText(movie.genres)
+                    binding.movieOverview.setText(movie.overview)
+                    binding.movieScore.setText(formatUserAvaliation(movie.vote_average))
+                    supportActionBar!!.setTitle(movie.title)
+                    binding.movieTrailerPlayer.setOnClickListener {
+                        openLink(YOUTUBE_PATH + movie.video)
                     }
-                    supportActionBar!!.setTitle(movieFinded?.title)
-                var separatedGenres = movieFinded?.genres?.joinToString(separator = " - ") {
-                    it -> it.name
-                }
-                    binding.movieGenres.setText(separatedGenres)
-                    binding.movieOverview.setText(movieFinded?.overview)
-                    binding.movieScore.setText(df.format(movieFinded?.vote_average))
-                    configuraImagem()
-                   val movieTrailer = movieFinded?.videos?.results
-                       if(movieTrailer?.isNotEmpty() == true) {
-                          val movieVideo: String? = movieTrailer.filter {
-                               it.type == "Trailer" || it.type == "Teaser"
-                           }?.get(0)?.key ?: movieFinded.videos.results.get(0).key
+                    lerFilmesFavoritos()
+                    binding.imageFavoriteHearth.setOnClickListener {
+                        when (isFavorite) {
+                            false -> {
+                                salvarFilmeFavorito()
+                            }
+                            true -> {
+                                removerFilmeFavorito()
+                            }
+                        }
+                    }
 
-                           binding.movieTrailerPlayer.setOnClickListener {
-                                   openLink(YOUTUBE_PATH + movieVideo)
-                           }
-                       }else{
-                           binding.movieTrailerPlayer.visibility = View.GONE
-                       }
+                })
 
-                }
-            }
         }
-        }
+    }
 
-    private fun tentaCarregarFilme(){
+    private fun tentaCarregarFilme(): String?{
         movieId = intent.getStringExtra(MOVIE_ID)
+        return movieId
     }
 
-    private fun configuraImagem(){
-        binding.movieTrailer.tryImageLoader(imagem.value)
-    }
     private fun salvarFilmeFavorito(){
         val sharedPreferences = getPreferences(
             MODE_PRIVATE
@@ -117,15 +108,13 @@ class MovieDetailActivity : AppCompatActivity() {
         lerFilmesFavoritos()
     }
 
-    private fun lerFilmesFavoritos(): Boolean{
+    private fun lerFilmesFavoritos(){
         val sharedPreferences = getPreferences(MODE_PRIVATE)
         var movie = sharedPreferences.getString(movieId, null)
-
         movie?.let {
             binding.imageFavoriteHearth.setImageResource(R.drawable.baseline_favorite_24)
-            return true
+            isFavorite = true
         }
-        return false
     }
 
     private fun removerFilmeFavorito(){
@@ -134,6 +123,7 @@ class MovieDetailActivity : AppCompatActivity() {
         editor.remove(movieId)
         editor.commit()
         binding.imageFavoriteHearth.setImageResource(R.drawable.baseline_favorite_border_24)
+        isFavorite = false
     }
 
     private fun openLink(link: String){

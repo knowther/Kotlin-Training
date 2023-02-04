@@ -13,7 +13,7 @@
             android:icon="@drawable/baseline_trending_up_24"
             android:title="Trending" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_upccoming"
             android:icon="@drawable/baseline_directions_run_24"
             android:title="Upcoming" />
     </group>
