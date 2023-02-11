@@ -9,8 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.becas.ntt.watchen.presentation.ui.MovieDetailActivity
 import com.becas.ntt.watchen.R
-import com.becas.ntt.watchen.data.webclient.MovieWebClient
-import com.becas.ntt.watchen.data.webclient.NetworkModule
 import com.becas.ntt.watchen.domain.repository.MovieRepository
 import com.becas.ntt.watchen.presentation.ui.recyclerview.adapter.MoviesHomeAdapter
 import com.becas.ntt.watchen.domain.utils.AppConstants
@@ -25,8 +23,7 @@ class UpcomingFragment : Fragment() {
     private lateinit var viewModel: UpcomingViewModel
 
     private val repository by lazy{
-        val api = NetworkModule().tmdbApi()
-        MovieRepository(MovieWebClient())
+        MovieRepository()
     }
 
     private val adapter by lazy {
@@ -65,7 +62,7 @@ class UpcomingFragment : Fragment() {
         ).get(UpcomingViewModel::class.java)
 
         viewModel.movieList.observe(viewLifecycleOwner, Observer {
-            adapter.setNotaList(it)
+            adapter.setMovieList(it)
         })
     }
 

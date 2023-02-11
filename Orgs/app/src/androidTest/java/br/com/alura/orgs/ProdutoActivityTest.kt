@@ -2,7 +2,6 @@ package br.com.alura.orgs
 
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -12,7 +11,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import br.com.alura.orgs.database.AppDataBase
 import br.com.alura.orgs.ui.activity.FormProdutoActivity
 import br.com.alura.orgs.ui.activity.ListaProdutoActivity
-import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

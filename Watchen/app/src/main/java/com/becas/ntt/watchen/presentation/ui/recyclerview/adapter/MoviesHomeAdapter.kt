@@ -11,8 +11,8 @@ import com.becas.ntt.watchen.data.webclient.model.dto.MovieDTO
 class MoviesHomeAdapter(private val onItemClicked: (MovieDTO) -> Unit): RecyclerView.Adapter<HomeViewHolder>() {
     private var movies = mutableListOf<MovieDTO>()
 
-    fun setNotaList(notas: List<MovieDTO>){
-        this.movies = notas.toMutableList()
+    fun setMovieList(movies: List<MovieDTO>){
+        this.movies = movies.toMutableList()
         notifyDataSetChanged()
     }
 

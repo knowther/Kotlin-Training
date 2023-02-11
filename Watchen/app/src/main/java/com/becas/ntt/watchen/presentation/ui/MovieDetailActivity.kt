@@ -1,32 +1,36 @@
 package com.becas.ntt.watchen.presentation.ui
 
 import android.content.Intent
-import android.graphics.Movie
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.becas.ntt.watchen.R
-import com.becas.ntt.watchen.data.webclient.MovieWebClient
-import com.becas.ntt.watchen.data.webclient.NetworkModule
-import com.becas.ntt.watchen.data.webclient.model.dto.MovieFindedDTO
+import com.becas.ntt.watchen.data.webclient.network.MovieWebClient
+import com.becas.ntt.watchen.data.webclient.network.NetworkModule
 import com.becas.ntt.watchen.databinding.ActivityMovieDetailBinding
-import com.becas.ntt.watchen.domain.model.FavoriteMovieManager
 import com.becas.ntt.watchen.domain.repository.MovieRepository
-import com.becas.ntt.watchen.domain.utils.AppConstants.IMAGE_URL
+import com.becas.ntt.watchen.domain.utils.AppConstants
 import com.becas.ntt.watchen.domain.utils.AppConstants.MOVIE_ID
 import com.becas.ntt.watchen.domain.utils.AppConstants.POSTER_IMAGE_URL
 import com.becas.ntt.watchen.domain.utils.AppConstants.YOUTUBE_PATH
 import com.becas.ntt.watchen.domain.utils.extensions.formatUserAvaliation
 import com.becas.ntt.watchen.domain.utils.extensions.tryImageLoader
-import com.becas.ntt.watchen.presentation.ui.discover.DiscoverViewModel
-import com.becas.ntt.watchen.presentation.ui.discover.DiscoverViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
@@ -34,18 +38,22 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MovieDetailViewModel
 
-    private val repository by lazy{
-        NetworkModule().tmdbApi()
-        MovieRepository(MovieWebClient())
+    private val repository by lazy {
+        MovieRepository()
     }
 
     private val binding by lazy {
         ActivityMovieDetailBinding.inflate(layoutInflater)
     }
 
+
+//    private val _dataStore: DataStore<Preferences> by preferencesDataStore(name = "favorites")
+
     private var isFavorite: Boolean = false
 
     private var movieId: String? = null
+
+    private var nonNullMovieId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +73,7 @@ class MovieDetailActivity : AppCompatActivity() {
         super.onResume()
         CoroutineScope(Dispatchers.Main).launch {
             tentaCarregarFilme()?.let { viewModel.getMovie(it) }
+
             viewModel.movieFinded.observe(this@MovieDetailActivity,
                 Observer { movie ->
                     binding.movieTitle.setText(movie.title)
@@ -87,18 +96,28 @@ class MovieDetailActivity : AppCompatActivity() {
                             }
                         }
                     }
-
+                    when(movie.video){
+                        null -> binding.movieTrailerPlayer.visibility = GONE
+                    }
                 })
 
+            viewModel.errorMessage.observe(this@MovieDetailActivity, Observer { error ->
+                visibilityControl(
+                    screenComponents = AppConstants.GONE,
+                    errorComponent = AppConstants.VISIBLE
+                )
+                binding.errorMessage.setText(error)
+            })
         }
     }
 
-    private fun tentaCarregarFilme(): String?{
+    private fun tentaCarregarFilme(): String? {
         movieId = intent.getStringExtra(MOVIE_ID)
         return movieId
     }
 
     private fun salvarFilmeFavorito(){
+
         val sharedPreferences = getPreferences(
             MODE_PRIVATE
         )
@@ -106,17 +125,54 @@ class MovieDetailActivity : AppCompatActivity() {
         editor.putString(movieId, movieId)
         editor.commit()
         lerFilmesFavoritos()
+//        lifecycleScope.launch {
+//            val key =  stringPreferencesKey(nonNullMovieId)
+//
+//            _dataStore.edit {favorites ->
+//                favorites[key] = nonNullMovieId
+//            }
+//        }
     }
-
+//
     private fun lerFilmesFavoritos(){
-        val sharedPreferences = getPreferences(MODE_PRIVATE)
-        var movie = sharedPreferences.getString(movieId, null)
-        movie?.let {
-            binding.imageFavoriteHearth.setImageResource(R.drawable.baseline_favorite_24)
-            isFavorite = true
-        }
+    val sharedPreferences = getPreferences(MODE_PRIVATE)
+    var movie = sharedPreferences.getString(movieId, null)
+    movie?.let {
+        binding.imageFavoriteHearth.setImageResource(R.drawable.baseline_favorite_24)
+        isFavorite = true
     }
+//          val key: Preferences.Key<String> = stringPreferencesKey(nonNullMovieId)
+//
+//          val flowFavoriteMovies: Flow<String> = _dataStore.data
+//              .map { preferences ->
+//                  preferences[key] ?: ""
+//              }
 
+//        lifecycleScope.launch {
+//            flowFavoriteMovies.collect{
+//                if (it != ""){
+//                    binding.imageFavoriteHearth.setImageResource(R.drawable.baseline_favorite_24)
+//                }else{
+//                    binding.imageFavoriteHearth.setImageResource(R.drawable.baseline_favorite_border_24)
+//                }
+//            }
+        }
+
+
+    private fun visibilityControl(screenComponents: String, errorComponent: String) {
+        if (screenComponents == AppConstants.GONE && errorComponent == AppConstants.VISIBLE) {
+            binding.imageFavoriteHearth.visibility = GONE
+            binding.movieGenres.visibility = GONE
+            binding.movieTrailer.visibility = GONE
+            binding.movieScore.visibility = GONE
+            binding.movieTitle.visibility = GONE
+            binding.movieOverview.visibility = GONE
+            binding.imagePlusList.visibility = GONE
+            binding.movieTrailerPlayer.visibility = GONE
+            binding.errorMessage.visibility = VISIBLE
+        }
+
+    }
     private fun removerFilmeFavorito(){
         val sharedPreferences = getPreferences(MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -124,9 +180,16 @@ class MovieDetailActivity : AppCompatActivity() {
         editor.commit()
         binding.imageFavoriteHearth.setImageResource(R.drawable.baseline_favorite_border_24)
         isFavorite = false
+//       val key = stringPreferencesKey(nonNullMovieId)
+//        lifecycleScope.launch {
+//            _dataStore.edit { favorites ->
+//                favorites.remove(key)
+//            }
+//        }
+//        isFavorite = false
     }
 
-    private fun openLink(link: String){
+    private fun openLink(link: String) {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
         startActivity(browserIntent)
     }

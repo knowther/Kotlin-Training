@@ -1,20 +1,26 @@
 package com.becas.ntt.watchen.presentation.ui.discover
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.becas.ntt.watchen.presentation.ui.MovieDetailActivity
 import com.becas.ntt.watchen.R
-import com.becas.ntt.watchen.data.webclient.MovieWebClient
-import com.becas.ntt.watchen.data.webclient.NetworkModule
+import com.becas.ntt.watchen.data.webclient.network.MovieWebClient
+import com.becas.ntt.watchen.data.webclient.network.NetworkModule
+import com.becas.ntt.watchen.data.webclient.network.Resultado
+import com.becas.ntt.watchen.databinding.FragmentDiscoverBinding
+import com.becas.ntt.watchen.databinding.FragmentTrendingBinding
 import com.becas.ntt.watchen.domain.repository.MovieRepository
 import com.becas.ntt.watchen.presentation.ui.recyclerview.adapter.MoviesHomeAdapter
 import com.becas.ntt.watchen.domain.utils.AppConstants.MOVIE_ID
 import com.becas.ntt.watchen.domain.utils.extensions.goTo
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,10 +31,10 @@ class DiscoverFragment: Fragment() {
 
     private lateinit var viewModel: DiscoverViewModel
 
-    private val repository by lazy{
-        val api = NetworkModule().tmdbApi()
+    private lateinit var binding: FragmentDiscoverBinding
 
-        MovieRepository(MovieWebClient())
+    private val repository by lazy{
+        MovieRepository()
     }
 
     private val adapter by lazy {
@@ -50,11 +56,8 @@ class DiscoverFragment: Fragment() {
         ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(
-            R.layout.fragment_discover,
-            container,
-            false
-        )
+        binding = FragmentDiscoverBinding.inflate(inflater, container, false)
+        return binding.root
 
     }
 
@@ -66,9 +69,21 @@ class DiscoverFragment: Fragment() {
             DiscoverViewModelFactory(repository)
         ).get(DiscoverViewModel::class.java)
 
-        viewModel.movieList.observe(viewLifecycleOwner, Observer {
-            adapter.setNotaList(it)
-        })
+        lifecycleScope.launch {
+            viewModel.getTrendingMovies().observe(viewLifecycleOwner){ result ->
+                when(result){
+                    is Resultado.Sucesso -> {
+                        result.dado?.let {
+                            adapter.setMovieList(it.results)
+                        }
+                    }
+                    is Resultado.Erro -> {
+                        Snackbar.make(binding.layoutManager, result.exception.message.toString(), Snackbar.LENGTH_SHORT).show()
+                        Log.e("trending", result.exception.message.toString() )
+                    }
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,13 +93,10 @@ class DiscoverFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        CoroutineScope(Dispatchers.IO).launch{
-            viewModel.getTrendingMovies()
-        }
     }
 
     fun configuraRecyclerView(){
-        recycler_view.adapter = this.adapter
+        binding.recyclerView.adapter = this.adapter
     }
 
 }
