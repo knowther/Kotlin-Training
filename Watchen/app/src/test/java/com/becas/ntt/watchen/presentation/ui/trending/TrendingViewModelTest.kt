@@ -12,7 +12,9 @@ import com.becas.ntt.watchen.data.webclient.model.dto.Videos
 import com.becas.ntt.watchen.data.webclient.network.Resultado
 import com.becas.ntt.watchen.domain.model.Movie
 import com.becas.ntt.watchen.domain.repository.MovieRepository
+import com.becas.ntt.watchen.presentation.ui.discover.DiscoverViewModel
 import io.mockk.mockk
+import kotlinx.coroutines.flow.internal.NopCollector.emit
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -28,7 +30,7 @@ class TrendingViewModelTest{
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    private lateinit var viewModel : TrendingViewModel
+    private lateinit var viewModel : DiscoverViewModel
 
     @Mock
     private lateinit var movieListObserver: Observer<List<MovieDTO>>
@@ -41,8 +43,7 @@ class TrendingViewModelTest{
     @Test
     suspend fun `when viewModel getTrending get sucess then set moviesLiveData`(){
         val repo = MockRepo()
-        viewModel = TrendingViewModel(repo)
-        viewModel.getTrendingMovies()
+        viewModel = DiscoverViewModel(MockRepo())
         val reponse = viewModel.movieList.getOrAwaitValue()
 
         assertTrue(reponse.isNotEmpty())
@@ -53,11 +54,11 @@ class TrendingViewModelTest{
 
 class MockRepo(): MovieRepository() {
 
-//    override suspend fun getTrending(): LiveData<PagingData<MovieDTO>> = liveData {
-//        emit(Resultado.Sucesso(dado = MovieResponseDTO(1, listOf(MovieDTO(true, "", listOf(1), 1, "", "", "", "", 1.0, "", "", "", false, 1.0, Videos(
-//            listOf()
-//        ), 1 )), 1, 1)))
-//    }
+    override suspend fun getTrending(): LiveData<PagingData<MovieDTO>> {
+       return  emit(Resultado.Sucesso(dado = MovieDTO()))
+
+    }
+
 }
 
 @VisibleForTesting(otherwise = VisibleForTesting.NONE)
