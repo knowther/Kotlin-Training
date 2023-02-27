@@ -25,17 +25,6 @@ class MovieDetailViewModel constructor(private val repository: MovieRepository):
     val movieFinded = MutableLiveData<Movie>()
     val errorMessage = MutableLiveData<String>()
 
-//    val favoriteFlow: Flow<String?> = dataStore.data.map { preferences ->
-//        preferences[PreferencesKey.NAME]
-//    }
-//
-//    fun saveFavorite(movieId: String){
-//        viewModelScope.launch(Dispatchers.IO) {
-//            dataStore.edit {preferences ->
-//                preferences[PreferencesKey.NAME] = movieId
-//            }
-//        }
-//    }
 
      fun getMovie(movieId: String){
         val response = repository.getMovie(movieId)

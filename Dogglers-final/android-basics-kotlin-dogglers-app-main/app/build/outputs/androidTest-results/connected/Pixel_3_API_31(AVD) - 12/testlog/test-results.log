@@ -38,9 +38,76 @@ INSTRUMENTATION_STATUS: class=com.example.dogglers.VerticalListTests
 INSTRUMENTATION_STATUS: current=3
 INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
 INSTRUMENTATION_STATUS: numtests=4
-INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: stack=androidx.test.espresso.base.DefaultFailureHandler$AssertionFailedWithCauseError: '(view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)' doesn't match the selected view.
+Expected: (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)
+Got: view.getGlobalVisibleRect() returned empty rectangle
+View Details: MaterialTextView{id=2131230886, res-name=dog_name, visibility=VISIBLE, width=1014, height=74, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@ba7cf0a, tag=null, root-is-layout-requested=false, has-input-connection=false, x=22.0, y=556.0, text=Faye, input-type=0, ime-target=false, has-links=false}
+
+at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+at java.lang.Thread.getStackTrace(Thread.java:1724)
+at androidx.test.espresso.base.DefaultFailureHandler.getUserFriendlyError(DefaultFailureHandler.java:12)
+at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:7)
+at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:5)
+at androidx.test.espresso.ViewInteraction.check(ViewInteraction.java:12)
+at com.example.dogglers.VerticalListTests.vertical_scrolling(VerticalListTests.kt:56)
+... 29 trimmed
+Caused by: junit.framework.AssertionFailedError: '(view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)' doesn't match the selected view.
+Expected: (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)
+Got: view.getGlobalVisibleRect() returned empty rectangle
+View Details: MaterialTextView{id=2131230886, res-name=dog_name, visibility=VISIBLE, width=1014, height=74, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@ba7cf0a, tag=null, root-is-layout-requested=false, has-input-connection=false, x=22.0, y=556.0, text=Faye, input-type=0, ime-target=false, has-links=false}
+
+at androidx.test.espresso.matcher.ViewMatchers.assertThat(ViewMatchers.java:16)
+at androidx.test.espresso.assertion.ViewAssertions$MatchesViewAssertion.check(ViewAssertions.java:11)
+at androidx.test.espresso.ViewInteraction$SingleExecutionViewAssertion.check(ViewInteraction.java:2)
+at androidx.test.espresso.ViewInteraction$2.call(ViewInteraction.java:12)
+at androidx.test.espresso.ViewInteraction$2.call(ViewInteraction.java:1)
+at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+at android.os.Handler.handleCallback(Handler.java:938)
+at android.os.Handler.dispatchMessage(Handler.java:99)
+at android.os.Looper.loopOnce(Looper.java:201)
+at android.os.Looper.loop(Looper.java:288)
+at android.app.ActivityThread.main(ActivityThread.java:7839)
+at java.lang.reflect.Method.invoke(Native Method)
+at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548)
+at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1003)
+
+INSTRUMENTATION_STATUS: stream=
+Error in vertical_scrolling(com.example.dogglers.VerticalListTests):
+androidx.test.espresso.base.DefaultFailureHandler$AssertionFailedWithCauseError: '(view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)' doesn't match the selected view.
+Expected: (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)
+Got: view.getGlobalVisibleRect() returned empty rectangle
+View Details: MaterialTextView{id=2131230886, res-name=dog_name, visibility=VISIBLE, width=1014, height=74, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@ba7cf0a, tag=null, root-is-layout-requested=false, has-input-connection=false, x=22.0, y=556.0, text=Faye, input-type=0, ime-target=false, has-links=false}
+
+at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+at java.lang.Thread.getStackTrace(Thread.java:1724)
+at androidx.test.espresso.base.DefaultFailureHandler.getUserFriendlyError(DefaultFailureHandler.java:12)
+at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:7)
+at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:5)
+at androidx.test.espresso.ViewInteraction.check(ViewInteraction.java:12)
+at com.example.dogglers.VerticalListTests.vertical_scrolling(VerticalListTests.kt:56)
+... 29 trimmed
+Caused by: junit.framework.AssertionFailedError: '(view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)' doesn't match the selected view.
+Expected: (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)
+Got: view.getGlobalVisibleRect() returned empty rectangle
+View Details: MaterialTextView{id=2131230886, res-name=dog_name, visibility=VISIBLE, width=1014, height=74, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@ba7cf0a, tag=null, root-is-layout-requested=false, has-input-connection=false, x=22.0, y=556.0, text=Faye, input-type=0, ime-target=false, has-links=false}
+
+at androidx.test.espresso.matcher.ViewMatchers.assertThat(ViewMatchers.java:16)
+at androidx.test.espresso.assertion.ViewAssertions$MatchesViewAssertion.check(ViewAssertions.java:11)
+at androidx.test.espresso.ViewInteraction$SingleExecutionViewAssertion.check(ViewInteraction.java:2)
+at androidx.test.espresso.ViewInteraction$2.call(ViewInteraction.java:12)
+at androidx.test.espresso.ViewInteraction$2.call(ViewInteraction.java:1)
+at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+at android.os.Handler.handleCallback(Handler.java:938)
+at android.os.Handler.dispatchMessage(Handler.java:99)
+at android.os.Looper.loopOnce(Looper.java:201)
+at android.os.Looper.loop(Looper.java:288)
+at android.app.ActivityThread.main(ActivityThread.java:7839)
+at java.lang.reflect.Method.invoke(Native Method)
+at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548)
+at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1003)
+
 INSTRUMENTATION_STATUS: test=vertical_scrolling
-INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS_CODE: -2
 INSTRUMENTATION_STATUS: class=com.example.dogglers.VerticalListTests
 INSTRUMENTATION_STATUS: current=4
 INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
@@ -57,9 +124,73 @@ INSTRUMENTATION_STATUS: test=vertical_scroll_content_at_first_position
 INSTRUMENTATION_STATUS_CODE: 0
 INSTRUMENTATION_RESULT: stream=
 
-Time: 6.11
+Time: 9.79
+There was 1 failure:
+1) vertical_scrolling(com.example.dogglers.VerticalListTests)
+androidx.test.espresso.base.DefaultFailureHandler$AssertionFailedWithCauseError: '(view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)' doesn't match the selected view.
+Expected: (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)
+Got: view.getGlobalVisibleRect() returned empty rectangle
+View Details: MaterialTextView{id=2131230886, res-name=dog_name, visibility=VISIBLE, width=1014, height=74, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@ba7cf0a, tag=null, root-is-layout-requested=false, has-input-connection=false, x=22.0, y=556.0, text=Faye, input-type=0, ime-target=false, has-links=false}
 
-OK (4 tests)
+at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+at java.lang.Thread.getStackTrace(Thread.java:1724)
+at androidx.test.espresso.base.DefaultFailureHandler.getUserFriendlyError(DefaultFailureHandler.java:12)
+at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:7)
+at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:5)
+at androidx.test.espresso.ViewInteraction.check(ViewInteraction.java:12)
+at com.example.dogglers.VerticalListTests.vertical_scrolling(VerticalListTests.kt:56)
+at java.lang.reflect.Method.invoke(Native Method)
+at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:48)
+at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+at androidx.test.ext.junit.runners.AndroidJUnit4.run(AndroidJUnit4.java:162)
+at org.junit.runners.Suite.runChild(Suite.java:128)
+at org.junit.runners.Suite.runChild(Suite.java:27)
+at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:56)
+at androidx.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:444)
+at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:2248)
+Caused by: junit.framework.AssertionFailedError: '(view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)' doesn't match the selected view.
+Expected: (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle)
+Got: view.getGlobalVisibleRect() returned empty rectangle
+View Details: MaterialTextView{id=2131230886, res-name=dog_name, visibility=VISIBLE, width=1014, height=74, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@ba7cf0a, tag=null, root-is-layout-requested=false, has-input-connection=false, x=22.0, y=556.0, text=Faye, input-type=0, ime-target=false, has-links=false}
+
+at androidx.test.espresso.matcher.ViewMatchers.assertThat(ViewMatchers.java:16)
+at androidx.test.espresso.assertion.ViewAssertions$MatchesViewAssertion.check(ViewAssertions.java:11)
+at androidx.test.espresso.ViewInteraction$SingleExecutionViewAssertion.check(ViewInteraction.java:2)
+at androidx.test.espresso.ViewInteraction$2.call(ViewInteraction.java:12)
+at androidx.test.espresso.ViewInteraction$2.call(ViewInteraction.java:1)
+at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+at android.os.Handler.handleCallback(Handler.java:938)
+at android.os.Handler.dispatchMessage(Handler.java:99)
+at android.os.Looper.loopOnce(Looper.java:201)
+at android.os.Looper.loop(Looper.java:288)
+at android.app.ActivityThread.main(ActivityThread.java:7839)
+at java.lang.reflect.Method.invoke(Native Method)
+at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548)
+at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1003)
+
+FAILURES!!!
+Tests run: 4,  Failures: 1
 
 
 INSTRUMENTATION_CODE: -1

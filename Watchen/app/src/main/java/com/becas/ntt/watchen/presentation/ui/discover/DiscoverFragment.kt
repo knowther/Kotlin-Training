@@ -64,25 +64,13 @@ class DiscoverFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         configuraRecyclerView()
-        viewModel = ViewModelProvider(
-            this,
-            DiscoverViewModelFactory(repository)
-        ).get(DiscoverViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(DiscoverViewModel::class.java)
 
+        viewModel.movieList.observe(viewLifecycleOwner, Observer {
+            adapter.setMovieList(it)
+        })
         lifecycleScope.launch {
-            viewModel.getTrendingMovies().observe(viewLifecycleOwner){ result ->
-                when(result){
-                    is Resultado.Sucesso -> {
-                        result.dado?.let {
-                            adapter.setMovieList(it.results)
-                        }
-                    }
-                    is Resultado.Erro -> {
-                        Snackbar.make(binding.layoutManager, result.exception.message.toString(), Snackbar.LENGTH_SHORT).show()
-                        Log.e("trending", result.exception.message.toString() )
-                    }
-                }
-            }
+            viewModel.getDiscoverMovies()
         }
     }
 
@@ -96,7 +84,7 @@ class DiscoverFragment: Fragment() {
     }
 
     fun configuraRecyclerView(){
-        binding.recyclerView.adapter = this.adapter
+        binding.recyclerViewDiscover.adapter = this.adapter
     }
 
 }

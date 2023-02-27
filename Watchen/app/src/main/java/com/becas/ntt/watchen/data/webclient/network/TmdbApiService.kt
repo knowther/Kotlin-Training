@@ -22,10 +22,10 @@ interface TmdbApiService {
     ): Response<MovieResponseDTO>
 
    @GET("discover/movie")
-    suspend fun getDiscover(
+     fun getDiscover(
        @Query("language") language: String,
        @Query("page") page: Int
-   ): Response<MovieResponseDTO>
+   ): Call<MovieResponseDTO>
 
     @GET("movie/{movie_id}")
     fun getMovie(

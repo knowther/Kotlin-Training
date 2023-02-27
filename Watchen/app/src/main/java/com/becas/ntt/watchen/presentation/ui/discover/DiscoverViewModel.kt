@@ -4,19 +4,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.becas.ntt.watchen.data.webclient.model.dto.MovieDTO
-import com.becas.ntt.watchen.data.webclient.model.dto.MovieResponseDTO
-import com.becas.ntt.watchen.data.webclient.network.Resultado
 import com.becas.ntt.watchen.domain.repository.MovieRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
-class DiscoverViewModel constructor(private val repository: MovieRepository) : ViewModel() {
-    val movieList = MutableLiveData<List<MovieDTO>>()
-    val errorMessage = MutableLiveData<String>()
+class DiscoverViewModel : ViewModel() {
 
-    suspend fun getTrendingMovies(): LiveData<Resultado<MovieResponseDTO?>> = repository.getDiscover()
+     var repository = MovieRepository()
+     private var _movieList = MutableLiveData<List<MovieDTO>>()
+
+    val movieList: LiveData<List<MovieDTO>> = _movieList
+
+      fun getDiscoverMovies(){
+        repository.getDiscover({movieDTO ->
+
+            _movieList.postValue(movieDTO)
+
+        }) { throwable -> "" }
+      }
+    fun getDiscoverLiveData(): LiveData<List<MovieDTO>>{
+        return  _movieList
+    }
 //    {
 //        val response = repository.getDiscover()
 //        response.enqueue(object : Callback<MovieResponseDTO> {

@@ -28,13 +28,13 @@
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">0</div>
+<div class="counter">1</div>
 <p>failures</p>
 </div>
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">4.064s</div>
+<div class="counter">7.365s</div>
 <p>duration</p>
 </div>
 </td>
@@ -43,8 +43,8 @@
 </div>
 </td>
 <td>
-<div class="infoBox success" id="successRate">
-<div class="percent">100%</div>
+<div class="infoBox failures" id="successRate">
+<div class="percent">75%</div>
 <p>successful</p>
 </div>
 </td>
@@ -54,10 +54,54 @@
 <div id="tabs">
 <ul class="tabLinks">
 <li>
-<a href="#tab0">Tests</a>
+<a href="#tab0">Failed tests</a>
+</li>
+<li>
+<a href="#tab1">Tests</a>
 </li>
 </ul>
 <div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="vertical_scrolling"></a>
+<h3 class="failures">vertical_scrolling</h3>
+<span class="code">
+<pre>androidx.test.espresso.base.DefaultFailureHandler$AssertionFailedWithCauseError: '(view has effective visibility &lt;VISIBLE&gt; and view.getGlobalVisibleRect() to return non-empty rectangle)' doesn't match the selected view.
+Expected: (view has effective visibility &lt;VISIBLE&gt; and view.getGlobalVisibleRect() to return non-empty rectangle)
+Got: view.getGlobalVisibleRect() returned empty rectangle
+View Details: MaterialTextView{id=2131230886, res-name=dog_name, visibility=VISIBLE, width=1014, height=74, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@ba7cf0a, tag=null, root-is-layout-requested=false, has-input-connection=false, x=22.0, y=556.0, text=Faye, input-type=0, ime-target=false, has-links=false}
+
+at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+at java.lang.Thread.getStackTrace(Thread.java:1724)
+at androidx.test.espresso.base.DefaultFailureHandler.getUserFriendlyError(DefaultFailureHandler.java:12)
+at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:7)
+at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:5)
+at androidx.test.espresso.ViewInteraction.check(ViewInteraction.java:12)
+at com.example.dogglers.VerticalListTests.vertical_scrolling(VerticalListTests.kt:56)
+... 29 trimmed
+Caused by: junit.framework.AssertionFailedError: '(view has effective visibility &lt;VISIBLE&gt; and view.getGlobalVisibleRect() to return non-empty rectangle)' doesn't match the selected view.
+Expected: (view has effective visibility &lt;VISIBLE&gt; and view.getGlobalVisibleRect() to return non-empty rectangle)
+Got: view.getGlobalVisibleRect() returned empty rectangle
+View Details: MaterialTextView{id=2131230886, res-name=dog_name, visibility=VISIBLE, width=1014, height=74, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@ba7cf0a, tag=null, root-is-layout-requested=false, has-input-connection=false, x=22.0, y=556.0, text=Faye, input-type=0, ime-target=false, has-links=false}
+
+at androidx.test.espresso.matcher.ViewMatchers.assertThat(ViewMatchers.java:16)
+at androidx.test.espresso.assertion.ViewAssertions$MatchesViewAssertion.check(ViewAssertions.java:11)
+at androidx.test.espresso.ViewInteraction$SingleExecutionViewAssertion.check(ViewInteraction.java:2)
+at androidx.test.espresso.ViewInteraction$2.call(ViewInteraction.java:12)
+at androidx.test.espresso.ViewInteraction$2.call(ViewInteraction.java:1)
+at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+at android.os.Handler.handleCallback(Handler.java:938)
+at android.os.Handler.dispatchMessage(Handler.java:99)
+at android.os.Looper.loopOnce(Looper.java:201)
+at android.os.Looper.loop(Looper.java:288)
+at android.app.ActivityThread.main(ActivityThread.java:7839)
+at java.lang.reflect.Method.invoke(Native Method)
+at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548)
+at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1003)</pre>
+</span>
+</div>
+</div>
+<div id="tab1" class="tab">
 <h2>Tests</h2>
 <table>
 <thead>
@@ -68,26 +112,26 @@
 </thead>
 <tr>
 <td>recycler_view_item_count</td>
-<td class="success">passed (1.780s)</td>
+<td class="success">passed (3.676s)</td>
 </tr>
 <tr>
 <td>vertical_scroll_content_at_first_position</td>
-<td class="success">passed (0.718s)</td>
+<td class="success">passed (0.981s)</td>
 </tr>
 <tr>
 <td>vertical_scroll_content_at_last_position</td>
-<td class="success">passed (0.643s)</td>
+<td class="success">passed (1.461s)</td>
 </tr>
 <tr>
 <td>vertical_scrolling</td>
-<td class="success">passed (0.923s)</td>
+<td class="failures">failed (1.247s)</td>
 </tr>
 </table>
 </div>
 </div>
 <div id="footer">
 <p>Generated by 
-<a href="http://www.gradle.org">Gradle 7.4.2</a> at 13 de fev de 2023 11:43:11</p>
+<a href="http://www.gradle.org">Gradle 7.4.2</a> at 14 de fev de 2023 16:48:14</p>
 </div>
 </div>
 </body>
