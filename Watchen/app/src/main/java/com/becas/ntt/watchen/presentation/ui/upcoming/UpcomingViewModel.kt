@@ -11,26 +11,12 @@ import retrofit2.Response
 
 class UpcomingViewModel constructor(private val repository: MovieRepository) : ViewModel() {
 
-    val movieList = MutableLiveData<List<MovieDTO>>()
+    val movieList = MutableLiveData<List<MovieDTO>?>()
     val errorMessage = MutableLiveData<String>()
 
      fun getUpcomingMovies(){
-        val response = repository.getUpcoming()
+        val response = repository.getUpcoming().value?.results
 
-        response.enqueue(object : Callback<MovieResponseDTO> {
-            override fun onResponse(
-                call: Call<MovieResponseDTO>,
-                response: Response<MovieResponseDTO>
-            ) {
-                if(response.isSuccessful){
-                    movieList.postValue(response.body()?.results)
+         movieList.postValue(response)
                 }
-            }
-
-            override fun onFailure(call: Call<MovieResponseDTO>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        })
-    }
-}
+        }

@@ -1,12 +1,19 @@
 package com.becas.ntt.watchen.presentation.ui.discover
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+
 import android.os.Looper
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.becas.ntt.watchen.data.webclient.model.dto.MovieDTO
+import com.becas.ntt.watchen.data.webclient.model.dto.MovieResponseDTO
 import com.becas.ntt.watchen.data.webclient.model.dto.Videos
 import com.becas.ntt.watchen.domain.repository.MovieRepository
 import com.becas.ntt.watchen.presentation.ui.discover.LiveDataTestUtils.getOrAwaitValue
+import com.becas.ntt.watchen.presentation.ui.upcoming.UpcomingViewModel
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
@@ -22,18 +29,11 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 
 
-@RunWith(RobolectricTestRunner::class)
 class DiscoverViewModelTest{
-    private lateinit var viewModel: DiscoverViewModel
+    private lateinit var viewModel: UpcomingViewModel
 
-    private val mockRepository = mock(MovieRepository::class.java)
-
-    @Mock
-    private lateinit var myObjectObserver: Observer<List<MovieDTO>>
-
-    @Captor
-    private lateinit var myObjectCaptor: ArgumentCaptor<List<MovieDTO>>
-
+    private val mockRepository = mockk<MovieRepository>()
+    private val onDataObserver = mockk<Observer<List<MovieDTO>?>>(relaxed = true)
 
 
     @get:Rule
@@ -42,61 +42,49 @@ class DiscoverViewModelTest{
     @Before
     fun setUp(){
         MockitoAnnotations.initMocks(this)
-        viewModel = DiscoverViewModel()
-        viewModel.getDiscoverLiveData().observeForever(myObjectObserver)
+        viewModel = UpcomingViewModel(mockRepository)
+        viewModel.movieList.observeForever(onDataObserver)
     }
 
     @Test
-    fun sum(){
-        assertEquals(4, 2+2)
-    }
+     fun `when view model fetches data then it should call the repository`() = runTest{
 
-    @Test
-     fun `fetchDiscover success`() = runTest{
+          val movies = MovieResponseDTO(
+              page = 1,
+              results =  listOf(
+                  MovieDTO(true,
+                      "",
+                      listOf(1),
+                      1,
+                      "",
+                      "",
+                      "",
+                      "",
+                      1.0,
+                      "",
+                      "",
+                      "MovieTest",
+                      false,
+                      1.0,
+                      Videos(listOf()),
+                      1
 
-        val movieList = listOf(
-            MovieDTO(true,
-                "",
-                listOf(1),
-                1,
-                "",
-                "",
-                "",
-                "",
-                1.0,
-                "",
-                "",
-                "MovieTest",
-                false,
-                1.0,
-                Videos(listOf()),
-                1
-
-            )
-        )
-
-        doAnswer { invocation ->
-            val onResult = invocation.arguments[0] as (List<MovieDTO>) -> Unit
-            onResult(movieList)
-            null
-        }.`when`(mockRepository).getDiscover(any(), any())
-
-//        `when`(mockRepository.getDiscover(any(), any())).thenAnswer { invocation ->
-//            val callback: (List<MovieDTO>) -> Unit = invocation.getArgument(0)
-//            callback(movieList)
-//        }
-
-        viewModel.getDiscoverMovies()
+                  )
+              ),
+              total_pages = 1,
+              total_result = 1
+          )
 
 
-        assertEquals(movieList, viewModel.movieList.getOrAwaitValue())
 
-//        myObjectCaptor.run {
-//            verify(myObjectObserver, times(1)).onChanged(capture())
-//            assertEquals(movieList, value)
-//        }
+        val movieList = MutableLiveData<MovieResponseDTO?>()
+        movieList.postValue(movies)
+        every { mockRepository.getUpcoming() } returns movieList
 
-//        shadowOf(Looper.getMainLooper()).idle()
+        viewModel.getUpcomingMovies()
+
+        verify{ mockRepository.getUpcoming()}
+        verify { onDataObserver.onChanged(movieList.value?.results) }
 
     }
 }

@@ -1,6 +1,7 @@
 package com.becas.ntt.watchen
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

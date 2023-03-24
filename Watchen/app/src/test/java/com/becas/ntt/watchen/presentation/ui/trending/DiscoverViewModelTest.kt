@@ -1,6 +1,7 @@
 package com.becas.ntt.watchen.presentation.ui.trending
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.liveData
 import com.becas.ntt.watchen.data.webclient.model.dto.MovieResponseDTO
 import com.becas.ntt.watchen.data.webclient.network.Resultado

@@ -1,5 +1,6 @@
 package com.becas.ntt.watchen.domain.repository
 
+import com.becas.ntt.watchen.data.webclient.model.dto.MovieResponseDTO
 import com.becas.ntt.watchen.data.webclient.network.MovieWebClient
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -7,21 +8,21 @@ import io.mockk.mockk
 import org.amshove.kluent.shouldBe
 import org.junit.Assert.*
 import org.junit.Test
+import retrofit2.Call
 
 class MovieRepositoryTest{
     @Test
-    fun When_get_AuthToken(){
+    fun When_get_Upcoming(){
         val webClient = mockk<MovieWebClient>()
-        val movieRepository = MovieRepository()
+
         coEvery {
-           webClient.getAuthToken()
-        }.returns(Unit)
-
-        println(movieRepository.getAuthToken())
-
-        coVerify {
-            webClient.getAuthToken()
+           webClient.buscarUpcoming()
         }
 
+        webClient.buscarUpcoming()
+
+        coVerify {
+            webClient.buscarUpcoming()
+        }
     }
 }

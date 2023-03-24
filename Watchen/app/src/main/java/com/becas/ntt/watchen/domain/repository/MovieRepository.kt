@@ -1,6 +1,8 @@
 package com.becas.ntt.watchen.domain.repository
 
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
@@ -41,8 +43,24 @@ open class MovieRepository {
 //        }
 //    }
 
-    fun getUpcoming(): Call<MovieResponseDTO>{
-        return tmdbService.getUpcoming()
+    fun getUpcoming(): MutableLiveData<MovieResponseDTO?> {
+        val liveData = MutableLiveData<MovieResponseDTO?>()
+        tmdbService.getUpcoming().enqueue(object : Callback<MovieResponseDTO> {
+            override fun onResponse(
+                call: Call<MovieResponseDTO>,
+                response: Response<MovieResponseDTO>
+            ) {
+                if(response.isSuccessful){
+                    response.body()?.let { liveData.postValue(it) }
+                }
+            }
+
+            override fun onFailure(call: Call<MovieResponseDTO>, t: Throwable) {
+                liveData.postValue(null)
+            }
+
+        })
+        return liveData
     }
      open fun getDiscover(onResult: (List<MovieDTO>) -> Unit, onFalure: (Throwable) -> Unit) {
          tmdbService.getDiscover("pt-BR", 1).enqueue(object : Callback<MovieResponseDTO> {

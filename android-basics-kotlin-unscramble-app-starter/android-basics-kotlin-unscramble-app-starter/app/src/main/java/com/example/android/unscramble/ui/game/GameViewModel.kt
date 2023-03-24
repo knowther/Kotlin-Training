@@ -73,5 +73,5 @@ class GameViewModel: ViewModel() {
         wordsList.clear()
         getNextWord()
     }
-    
+
 }

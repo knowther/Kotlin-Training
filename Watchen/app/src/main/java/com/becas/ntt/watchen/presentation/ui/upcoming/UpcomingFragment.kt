@@ -62,7 +62,9 @@ class UpcomingFragment : Fragment() {
         ).get(UpcomingViewModel::class.java)
 
         viewModel.movieList.observe(viewLifecycleOwner, Observer {
-            adapter.setMovieList(it)
+            if (it != null) {
+                adapter.setMovieList(it)
+            }
         })
     }
 

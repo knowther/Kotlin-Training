@@ -60,9 +60,7 @@ class DiscoverFragmentTest{
                     ViewModelProvider.AndroidViewModelFactory.getInstance(it.application)
                 ).get(DiscoverViewModel::class.java)
 
-                coEvery{
 
-                }
 
 //                    viewModel._movieList.postValue(movieList)
 //                    onView(withId(R.id.recycler_view_discover))
